@@ -4,7 +4,7 @@ const express = require('express'); //Node isn't campatible with ES6 module synt
 const app = express();
 
 app.get('/', (req, res) => {
-    res.send({ hi: 'there'});
+    res.send({ hi: 'Ben'});
 });
 
 const PORT = process.env.PORT || 5000;
