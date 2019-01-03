@@ -8,5 +8,3 @@ const entrySchema = new Schema({
 });
 
 mongoose.model("entries", entrySchema);
-
-// Test push to git
