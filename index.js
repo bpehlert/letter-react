@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cookieSession = require("cookie-session");
 const passport = require("passport");
 const keys = require("./config/keys");
+const bodyParser = require("body-parser");
 require("./models/User");
 require("./models/Entry");
 require("./services/passport");
@@ -19,6 +20,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(bodyParser.json());
 
 require("./routes/authRoutes")(app);
 require("./routes/entryRoutes")(app);
