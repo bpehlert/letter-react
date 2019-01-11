@@ -8,7 +8,7 @@ import reduxThunk from "redux-thunk";
 import App from "./components/App";
 import reducers from "./reducers";
 
-// Helper for development only
+// Helper for development only - remove before pushing final build.
 import axios from "axios";
 window.axios = axios;
 
