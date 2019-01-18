@@ -1,5 +1,6 @@
 // EntryNew shows EntryForm and EntryReview
 import React, { Component } from "react";
+import { reduxForm } from "redux-form";
 import EntryForm from "./EntryForm";
 import EntryFormReview from "./EntryFormReview";
 
@@ -26,4 +27,6 @@ class EntryNew extends Component {
   }
 }
 
-export default EntryNew;
+export default reduxForm({
+  form: "entryForm"
+})(EntryNew);
