@@ -3,9 +3,11 @@ const mongoose = require("mongoose");
 const cookieSession = require("cookie-session");
 const passport = require("passport");
 const keys = require("./config/keys");
-const bodyParser = require("body-parser");
+const bodyParser = require("body-parser"); // allows body properties to be access on incoming requests.
+// These require statements initialize the different models and connect them to Mongoose.
 require("./models/User");
 require("./models/Entry");
+// This require statement initializes passport.
 require("./services/passport");
 
 mongoose.connect(keys.mongoURI);
@@ -14,7 +16,7 @@ const app = express();
 
 app.use(
   cookieSession({
-    maxAge: 30 * 24 * 60 * 60 * 1000,
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in miliseconds
     keys: [keys.cookieKey]
   })
 );

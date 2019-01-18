@@ -26,11 +26,21 @@ passport.use(
     },
     //  Callback function to save user to DB
     async (accessToken, refreshToken, profile, done) => {
+      console.log(profile);
       const existingUser = await User.findOne({ googleId: profile.id });
       if (existingUser) {
         return done(null, existingUser);
       }
-      const user = await new User({ googleId: profile.id }).save();
+
+      const user = await new User({
+        googleId: profile.id,
+        name: {
+          firstName: profile.name.givenName,
+          lastName: profile.name.familyName
+        },
+        email: profile.emails[0].value,
+        photoURL: profile.photos[0].value
+      }).save();
       done(null, user);
     }
   )
