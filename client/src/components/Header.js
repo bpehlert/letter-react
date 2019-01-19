@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import Button from "./Button";
+import Logo from "./Logo";
 
 class Header extends Component {
   renderContent() {
@@ -10,13 +12,17 @@ class Header extends Component {
       case false:
         return (
           <li>
-            <a href="/auth/google">Login with Google</a>
+            <Button as="a" href="/auth/google" primary>
+              Login with Google
+            </Button>
           </li>
         );
       default:
         return (
           <li>
-            <a href="/api/logout">Logout</a>
+            <Button as="a" href="/api/logout">
+              Logout
+            </Button>
           </li>
         );
     }
@@ -25,13 +31,8 @@ class Header extends Component {
   render() {
     return (
       <nav>
-        <div className="nav-wrapper">
-          <Link
-            to={this.props.auth ? "/entries" : "/"}
-            className="left brand-logo"
-          >
-            Letter
-          </Link>
+        <div>
+          <Logo to={this.props.auth ? "/entries" : "/"}>Letter</Logo>
           <ul className="right">{this.renderContent()}</ul>
         </div>
       </nav>

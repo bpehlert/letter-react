@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const requireLogin = require("../middlewares/requireLogin");
 
-const Entry = mongoose.model("entries"); //This is how you require in mongoose mondel classes
+const Entry = mongoose.model("entries"); //This is how you require in mongoose model classes
 
 module.exports = app => {
   app.post("/api/entries", requireLogin, async (req, res) => {
