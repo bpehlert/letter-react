@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import * as actions from "../actions";
+import GlobalStyle from "../theme/global";
 
 import Header from "./Header";
 import Landing from "./Landing";
@@ -15,14 +16,15 @@ class App extends Component {
 
   render() {
     return (
-      <BrowserRouter>
+      <Router>
         <div className="container">
+          <GlobalStyle />
           <Header />
           <Route exact path="/" component={Landing} />
           <Route exact path="/entries" component={Entries} />
           <Route path="/entries/new" component={EntryNew} />
         </div>
-      </BrowserRouter>
+      </Router>
     );
   }
 }

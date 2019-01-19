@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 const Entries = () => {
   return (
     <div>
+      <p>Entries Paragraph</p>
       Entries
       <div className="fixed-action-btn">
         <Link

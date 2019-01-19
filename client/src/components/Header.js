@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import Button from "./Button";
-import Logo from "./Logo";
+import Button from "./styled/Button";
+import Logo from "./styled/Logo";
 
 class Header extends Component {
   renderContent() {
