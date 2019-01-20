@@ -1,13 +1,11 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-const Logo = styled(Link)`
+const LogoLink = styled(Link)`
   font-weight: bold;
   text-decoration: none;
   font-size: 2em;
-  a:visited {
-    color: black;
-  }
+  color: black;
 `;
 
-export default Logo;
+export default LogoLink;

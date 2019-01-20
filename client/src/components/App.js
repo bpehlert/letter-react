@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import * as actions from "../actions";
 import GlobalStyle from "../theme/global";
 
-import Header from "./Header";
+import Header from "./navigation/Header";
 import Landing from "./Landing";
 import Entries from "./Entries";
 import EntryNew from "./entries/EntryNew";
