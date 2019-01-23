@@ -9,9 +9,22 @@ import Landing from "./Landing";
 import Entries from "./Entries";
 import EntryNew from "./entries/EntryNew";
 
+const Account = () => <p>Account Settings</p>;
+
 class App extends Component {
   componentDidMount() {
     this.props.fetchUser();
+  }
+
+  renderContent() {
+    switch (this.props.auth) {
+      case null:
+        return;
+      case false:
+        return Landing;
+      default:
+        return Entries;
+    }
   }
 
   render() {
@@ -20,16 +33,20 @@ class App extends Component {
         <div>
           <GlobalStyle />
           <Header />
-          <Route exact path="/" component={Landing} />
-          <Route exact path="/entries" component={Entries} />
-          <Route path="/entries/new" component={EntryNew} />
+          <Route exact path="/" component={this.renderContent()} />
+          <Route exact path="/new" component={EntryNew} />
+          <Route path="/account" component={Account} />
         </div>
       </Router>
     );
   }
 }
 
+function mapStateToProps(state) {
+  return { auth: state.auth };
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   actions
 )(App);

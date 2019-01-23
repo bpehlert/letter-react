@@ -7,7 +7,7 @@ const Entries = () => {
       Entries
       <div className="fixed-action-btn">
         <Link
-          to="/entries/new"
+          to="/new"
           className="btn-floating btn-large waves-effect waves-light red"
         >
           <i className="material-icons">add</i>

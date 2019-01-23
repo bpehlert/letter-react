@@ -5,7 +5,7 @@ const Nav = styled.nav`
   align-items: center;
   justify-content: space-around;
 
-  div {
+  ul {
     list-style-type: none;
     display: flex;
     justify-content: space-around;
