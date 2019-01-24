@@ -13,6 +13,8 @@ const Nav = styled.nav`
 
   ul {
     list-style-type: none;
+    display: flex;
+    align-items: center;
   }
 `;
 
