@@ -5,10 +5,14 @@ const Nav = styled.nav`
   align-items: center;
   justify-content: space-around;
 
+  .nav-bar-options {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
   ul {
     list-style-type: none;
-    display: flex;
-    justify-content: space-around;
   }
 `;
 

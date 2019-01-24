@@ -24,7 +24,7 @@ class EntryForm extends Component {
       <div>
         <form onSubmit={this.props.handleSubmit(this.props.onEntrySubmit)}>
           {this.renderFields()}
-          <Link to="/entries" className="red btn-flat white-text">
+          <Link to="/" className="red btn-flat white-text">
             Cancel
           </Link>
           <button type="submit" className="green btn-flat right white-text">

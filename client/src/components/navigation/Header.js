@@ -6,7 +6,6 @@ import Landing from "./Landing";
 class Header extends Component {
   // Checks the auth state of the app to determine if user is logged in.
   renderContent() {
-    console.log(this.props);
     switch (this.props.auth) {
       case null:
         return <div />;

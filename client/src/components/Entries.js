@@ -1,20 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 const Entries = () => {
-  return (
-    <div>
-      Entries
-      <div className="fixed-action-btn">
-        <Link
-          to="/new"
-          className="btn-floating btn-large waves-effect waves-light red"
-        >
-          <i className="material-icons">add</i>
-        </Link>
-      </div>
-    </div>
-  );
+  return <p>Entries to print here.</p>;
 };
 
 export default Entries;
