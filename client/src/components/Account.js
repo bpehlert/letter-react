@@ -1,15 +1,9 @@
 import React from "react";
-import Header from "./navigation/Header";
 
-const Account = ({ routeProps }) => {
-  console.log(routeProps);
-
+const Account = () => {
   return (
     <div>
-      <Header routeProps={routeProps.location.pathname} />
-      <div>
-        <p>Account Settings</p>
-      </div>
+      <p>Account Settings</p>
     </div>
   );
 };

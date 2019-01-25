@@ -31,16 +31,10 @@ class App extends Component {
       <Router>
         <div>
           <GlobalStyle />
+          <Header />
           <Route exact path="/" component={this.renderContent()} />
-          <Route
-            exact
-            path="/new"
-            render={props => <EntryNew routeProps={props} />}
-          />
-          <Route
-            path="/account"
-            render={props => <Account routeProps={props} />}
-          />
+          <Route exact path="/new" component={EntryNew} />
+          <Route path="/account" component={Account} />
         </div>
       </Router>
     );

@@ -12,7 +12,7 @@ class Header extends Component {
       case false:
         return <Landing />;
       default:
-        return <LoggedIn routeProps={this.props.routeProps} />;
+        return <LoggedIn />;
     }
   }
 }

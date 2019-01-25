@@ -1,8 +1,8 @@
 import React from "react";
 import ButtonLink from "../styled/ButtonLink";
 
-const NavButtons = ({ componentName }) => {
-  switch (componentName) {
+const NavButtons = ({ currentRoute }) => {
+  switch (currentRoute) {
     default:
       return (
         <ul>
