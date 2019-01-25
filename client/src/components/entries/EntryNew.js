@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { reduxForm } from "redux-form";
 import EntryForm from "./EntryForm";
 import EntryFormReview from "./EntryFormReview";
+import Header from "../navigation/Header";
 
 class EntryNew extends Component {
   state = { showFormReview: false };
@@ -23,7 +24,12 @@ class EntryNew extends Component {
   }
 
   render() {
-    return <div>{this.renderContent()}</div>;
+    return (
+      <div>
+        <Header routeProps={this.props.routeProps.location.pathname} />
+        <div>{this.renderContent()}</div>
+      </div>
+    );
   }
 }
 

@@ -1,9 +1,10 @@
 import styled from "styled-components";
 
 const Nav = styled.nav`
+  margin: 0 15%;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
 
   .nav-bar-options {
     display: flex;

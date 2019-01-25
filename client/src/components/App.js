@@ -8,8 +8,7 @@ import Header from "./navigation/Header";
 import Landing from "./Landing";
 import Entries from "./Entries";
 import EntryNew from "./entries/EntryNew";
-
-const Account = () => <p>Account Settings</p>;
+import Account from "./Account";
 
 class App extends Component {
   componentDidMount() {
@@ -32,10 +31,16 @@ class App extends Component {
       <Router>
         <div>
           <GlobalStyle />
-          <Header />
           <Route exact path="/" component={this.renderContent()} />
-          <Route exact path="/new" component={EntryNew} />
-          <Route path="/account" component={Account} />
+          <Route
+            exact
+            path="/new"
+            render={props => <EntryNew routeProps={props} />}
+          />
+          <Route
+            path="/account"
+            render={props => <Account routeProps={props} />}
+          />
         </div>
       </Router>
     );

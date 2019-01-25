@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Nav from "../styled/Nav";
 import LogoImg from "../styled/LogoImg";
+import ButtonLink from "../styled/ButtonLink";
 import Button from "../styled/Button";
 
 const Landing = () => {
@@ -12,9 +13,9 @@ const Landing = () => {
       </Link>
       <ul>
         <li>
-          <Button as="a" href="#" primary>
-            Start a journal
-          </Button>
+          <ButtonLink to="/signup" primary="true">
+            Get Started
+          </ButtonLink>
         </li>
         <li>
           <Button as="a" href="/auth/google">

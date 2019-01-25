@@ -3,13 +3,21 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Nav from "../styled/Nav";
 import LogoImg from "../styled/LogoImg";
+import NavButtons from "./NavButtons";
 import DropDown from "../styled/DropDown";
 import DropDownContainer from "../styled/DropDownContainer";
-import ButtonLink from "../styled/ButtonLink";
 import ProfileImg from "../styled/ProfileImg";
 
 class LoggedIn extends Component {
-  state = { showMenu: false };
+  state = {
+    showMenu: false,
+    route: ""
+  };
+
+  componentDidMount() {
+    const currentRoute = window.location.pathname;
+    this.setState({ route: currentRoute });
+  }
 
   showMenu = () => {
     document.addEventListener("click", this.closeMenu);
@@ -31,13 +39,7 @@ class LoggedIn extends Component {
         </Link>
 
         <div className="nav-bar-options">
-          <ul>
-            <li>
-              <ButtonLink to="/new" primary="true">
-                New Entry
-              </ButtonLink>
-            </li>
-          </ul>
+          <NavButtons componentName={this.props.routeProps} />
 
           <DropDownContainer>
             <ProfileImg
