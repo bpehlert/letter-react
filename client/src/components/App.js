@@ -7,7 +7,7 @@ import GlobalStyle from "../theme/global";
 import Header from "./navigation/Header";
 import Landing from "./Landing";
 import Entries from "./Entries";
-import EntryNew from "./entries/EntryNew";
+import New from "./entries/New";
 import Account from "./Account";
 
 class App extends Component {
@@ -33,7 +33,7 @@ class App extends Component {
           <GlobalStyle />
           <Header />
           <Route exact path="/" component={this.renderContent()} />
-          <Route exact path="/new" component={EntryNew} />
+          <Route exact path="/new" component={New} />
           <Route path="/account" component={Account} />
         </div>
       </Router>

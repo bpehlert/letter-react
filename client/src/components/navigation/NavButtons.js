@@ -21,7 +21,7 @@ const NavButtons = ({ currentRoute }) => {
           </li>
           <li>
             <ButtonLink to="/test" primary="true">
-              Save Entry
+              Save and Preview
             </ButtonLink>
           </li>
         </ul>
