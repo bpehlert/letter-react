@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import DatePicker from "react-datepicker";
 import EntryInput from "../styled/EntryInput";
+import TextEditor from "./TextEditor";
 
 import "react-datepicker/dist/react-datepicker.css";
 import Button from "../styled/Button";
@@ -33,15 +34,8 @@ class New extends Component {
       <div>
         <DatePicker selected={this.state.date} onChange={this.handleChange} />
         <EntryInput onChange={this.onTextChange} />
+        <TextEditor />
         <Button onClick={this.printEntry}>Print to console</Button>
-
-        <div
-          style={{
-            maxWidth: "200px"
-          }}
-        >
-          <span contentEditable="true">Start writing your story here...</span>
-        </div>
       </div>
     );
   }
