@@ -39,7 +39,7 @@ class LoggedIn extends Component {
         </Link>
 
         <div className="nav-bar-options">
-          <NavButtons currentRoute={this.state.route} />
+          <NavButtons currentRoute={this.props.location.pathname} />
 
           <DropDownContainer>
             <ProfileImg
