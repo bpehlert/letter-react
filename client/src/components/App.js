@@ -25,6 +25,7 @@ class App extends Component {
         return Entries;
     }
   }
+  // test comment.
 
   render() {
     return (
