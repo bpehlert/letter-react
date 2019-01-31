@@ -15,6 +15,24 @@ const EntryContainer = styled.div`
   .date:focus {
     outline-width: 0;
   }
+
+  .saved {
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+    border-radius: 3px;
+
+    &-visible {
+      opacity: 0.7;
+    }
+
+    p {
+      margin: 0;
+      padding: 10px 0px;
+      font-family: sans-serif;
+      font-size: 0.8em;
+    }
+  }
 `;
 
 export default EntryContainer;
