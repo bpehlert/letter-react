@@ -1,13 +1,20 @@
 import React from "react";
 import DatePicker from "react-datepicker";
 import { Editor, EditorState, RichUtils } from "draft-js";
+import { connect } from "react-redux";
+import * as actions from "../../actions";
 
 class EntryEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = { editorState: EditorState.createEmpty(), date: new Date() };
-    this.onChange = editorState => this.setState({ editorState });
   }
+
+  onChange = editorState => {
+    this.setState({ editorState });
+    // Adds the local state of the text editor to the redux store
+    this.props.updateEntry(editorState);
+  };
 
   handleChange = date => {
     this.setState({
@@ -23,6 +30,9 @@ class EntryEditor extends React.Component {
     }
     return "not-handled";
   }
+
+  // Create autosave function that dispatches the local state of EntryEditor to the Redux store.
+  autoSave() {}
 
   render() {
     return (
@@ -44,4 +54,12 @@ class EntryEditor extends React.Component {
   }
 }
 
-export default EntryEditor;
+function mapStateToProps(state) {
+  console.log(state);
+  return { auth: state.auth };
+}
+
+export default connect(
+  mapStateToProps,
+  actions
+)(EntryEditor);
