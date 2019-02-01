@@ -1,9 +1,10 @@
 import React from "react";
 import DatePicker from "react-datepicker";
 import SaveMessage from "./SaveMessage";
-import { Editor, EditorState, RichUtils } from "draft-js";
+import { Editor, EditorState, RichUtils, convertToRaw } from "draft-js";
 import { connect } from "react-redux";
 import * as actions from "../../actions";
+import axios from "axios";
 
 class EntryEditor extends React.Component {
   constructor(props) {
@@ -12,17 +13,21 @@ class EntryEditor extends React.Component {
       editorState: EditorState.createEmpty(),
       date: new Date(),
       timeout: null,
-      showSaved: false,
+      showSavedMessage: false,
       savedMessage: "Saved"
     };
   }
 
-  onChange = editorState => {
-    // Call for Draft.js to udpate the state
-    this.setState({ editorState });
+  componentWillUnmount() {
+    // Clears all timeouts to avoid error on unmounting components.
+    clearTimeout(this.timer);
+    clearTimeout(this.state.timeout);
+  }
 
-    // Adds the local state of the text editor to the redux store
-    this.props.updateEntry(editorState);
+  onChange = editorState => {
+    this.setState({ editorState }); // Call for Draft.js to udpate the state
+
+    this.props.updateEntry(editorState); // Adds the local state of the text editor to the redux store
 
     this.setState({
       timeout: this.resetTimeout(
@@ -38,12 +43,24 @@ class EntryEditor extends React.Component {
   };
 
   saveValue = () => {
-    this.setState({ ...this.state, showSaved: true });
+    this.setState({ showSavedMessage: true });
+    this.timer = setTimeout(
+      () => this.setState({ showSavedMessage: false }),
+      1000
+    );
 
-    // Function to persist entry to database.
-    console.log(this.state.editorState.getCurrentContent());
-
-    setTimeout(() => this.setState({ ...this.state, showSaved: false }), 1000);
+    // Function to persist entry to database and to update the state to "saving..." and then "saved"
+    const contentState = convertToRaw(
+      this.state.editorState.getCurrentContent()
+    );
+    const payLoad = {
+      date: this.state.date,
+      body: contentState,
+      entryNumber: 1
+    };
+    this.postToDB("/api/entries", payLoad);
+    //
+    //
   };
 
   handleKeyCommand(command, editorState) {
@@ -55,17 +72,24 @@ class EntryEditor extends React.Component {
     return "not-handled";
   }
 
+  async postToDB(route, payLoad) {
+    const res = await axios.post(route, payLoad);
+    console.log(res);
+  }
+
   render() {
-    const { showSaved, date, editorState } = this.state;
+    const { showSavedMessage, date, editorState } = this.state;
     return (
       <div>
-        <SaveMessage className={"saved" + (showSaved ? " saved-visible" : "")}>
+        <SaveMessage
+          className={"saved" + (showSavedMessage ? " saved-visible" : "")}
+        >
           <p>{this.state.savedMessage}</p>
         </SaveMessage>
 
         <DatePicker
           selected={date}
-          onChange={date => this.setState({ date: date })}
+          onChange={date => this.setState({ date })}
           className="date"
         />
 
