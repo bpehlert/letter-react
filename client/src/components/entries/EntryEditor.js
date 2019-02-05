@@ -23,6 +23,7 @@ class EntryEditor extends React.Component {
     // Clears all timeouts to avoid error on unmounting components.
     clearTimeout(this.timer);
     clearTimeout(this.state.timeout);
+    clearTimeout(this.showTimer);
   }
 
   // REFACTOR CODE TO KEEP STATE.SAVEDMESSAGE AS "SAVING..." WHILE POST REQUEST IS PENDING
@@ -44,11 +45,7 @@ class EntryEditor extends React.Component {
   };
 
   saveEntry = () => {
-    this.setState({ showSavedMessage: true });
-    this.timer = setTimeout(
-      () => this.setState({ showSavedMessage: false }),
-      1000
-    );
+    this.setState({ showSavedMessage: true, saveMessage: "Saving..." });
 
     const payLoad = {
       date: this.state.date,
@@ -63,6 +60,22 @@ class EntryEditor extends React.Component {
     this.putToDB("/api/entries", payLoad);
   };
 
+  async postToDB(route, payLoad) {
+    const res = await axios.post(route, payLoad);
+    console.log(res);
+
+    this.timer = setTimeout(() => {
+      this.setState({ saveMessage: "Saved" });
+      this.showTimer = setTimeout(
+        () => this.setState({ showSavedMessage: false }),
+        1000
+      );
+    }, 500);
+  }
+
+  async putToDB(route, payLoad) {}
+
+  // Boilerplate Function for Draft.js to allow for keyboard shortcuts for styling text
   handleKeyCommand(command, editorState) {
     const newState = RichUtils.handleKeyCommand(editorState, command);
     if (newState) {
@@ -70,20 +83,6 @@ class EntryEditor extends React.Component {
       return "handled";
     }
     return "not-handled";
-  }
-
-  async postToDB(route, payLoad) {
-    this.setState({ saveMessage: "Saving..." });
-    const res = await axios.post(route, payLoad);
-    this.setState({ saveMessage: "Saved" });
-    console.log(res);
-  }
-
-  async putToDB(route, payLoad) {
-    this.setState({ saveMessage: "Saving..." });
-    const res = await axios.post(route, payLoad);
-    this.setState({ saveMessage: "Saved" });
-    console.log(res);
   }
 
   render() {
