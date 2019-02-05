@@ -5,12 +5,11 @@ const Entry = mongoose.model("entries"); //This is how you require in mongoose m
 
 module.exports = app => {
   app.post("/api/entries", requireLogin, async (req, res) => {
-    const { date, body, entryNumber } = req.body;
+    const { date, body } = req.body;
 
     const entry = new Entry({
       date,
       body,
-      entryNumber,
       _user: req.user.id,
       dateCreated: Date.now(),
       lastEdited: Date.now()
@@ -21,9 +20,21 @@ module.exports = app => {
       req.user.entries += 1;
       const user = await req.user.save();
 
-      res.send(body);
+      res.send(entry);
     } catch (err) {
       res.status(422).send(err);
     }
+  });
+
+  app.put("/api/entries", requireLogin, async (req, res) => {
+    Entry.findByIdAndUpdate(
+      req.body.id,
+      req.body,
+      { new: true },
+      (err, entry) => {
+        if (err) return res.status(422).send(err);
+        return res.send(entry);
+      }
+    );
   });
 };
