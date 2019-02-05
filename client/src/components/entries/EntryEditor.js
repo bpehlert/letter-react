@@ -4,6 +4,7 @@ import SaveMessage from "./SaveMessage";
 import { Editor, EditorState, RichUtils, convertToRaw } from "draft-js";
 // import { stateToHTML } from "draft-js-export-html"; //https://www.npmjs.com/package/draft-js-export-html
 import { connect } from "react-redux";
+import JournalDate from "./JournalDate";
 import axios from "axios";
 
 import "draft-js/dist/Draft.css";
@@ -99,6 +100,8 @@ class EntryEditor extends React.Component {
         >
           <p>{this.state.saveMessage}</p>
         </SaveMessage>
+
+        <JournalDate today={this.state.date} />
 
         <DatePicker
           selected={date}
