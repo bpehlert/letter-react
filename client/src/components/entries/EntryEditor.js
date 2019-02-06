@@ -53,6 +53,7 @@ class EntryEditor extends React.Component {
 
   handleDateChange = date => {
     this.setState({ date });
+    this.saveEntry();
   };
 
   saveEntry = () => {
