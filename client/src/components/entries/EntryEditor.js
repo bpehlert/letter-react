@@ -1,5 +1,4 @@
 import React from "react";
-import DatePicker from "react-datepicker";
 import SaveMessage from "./SaveMessage";
 import { Editor, EditorState, RichUtils, convertToRaw } from "draft-js";
 // import { stateToHTML } from "draft-js-export-html"; //https://www.npmjs.com/package/draft-js-export-html
@@ -52,6 +51,10 @@ class EntryEditor extends React.Component {
     return newID;
   };
 
+  handleDateChange = date => {
+    this.setState({ date });
+  };
+
   saveEntry = () => {
     this.setState({ showSavedMessage: true, saveMessage: "Saving..." });
 
@@ -101,16 +104,7 @@ class EntryEditor extends React.Component {
           <p>{this.state.saveMessage}</p>
         </SaveMessage>
 
-        <JournalDate today={this.state.date} />
-
-        <DatePicker
-          selected={date}
-          onChange={date => {
-            this.setState({ date });
-            this.saveEntry();
-          }}
-          className="date"
-        />
+        <JournalDate today={date} handleDateChange={this.handleDateChange} />
 
         <Editor
           editorState={editorState}
