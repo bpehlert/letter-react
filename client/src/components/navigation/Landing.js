@@ -22,6 +22,9 @@ const Landing = () => {
             Sign in
           </Button>
         </li>
+        <li>
+          <div class="g-signin2" data-onsuccess="onSignIn" />
+        </li>
       </ul>
     </Nav>
   );

@@ -58,12 +58,7 @@ class JournalDate extends Component {
     return (
       <div>
         <div>
-          <DateButton
-            onClick={this.showCalendar}
-            ref={e => {
-              this.datePicker = e;
-            }}
-          >
+          <DateButton onClick={this.showCalendar}>
             <h2>{`${dayNumber} ${dayName}`}</h2>
             <h3>{`${monthName} ${year}`}</h3>
           </DateButton>
