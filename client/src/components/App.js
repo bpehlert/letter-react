@@ -8,6 +8,7 @@ import Header from "./navigation/Header";
 import Landing from "./Landing";
 import Entries from "./Entries";
 import New from "./entries/New";
+import Auth from "./Auth";
 import Account from "./Account";
 
 class App extends Component {
@@ -34,6 +35,8 @@ class App extends Component {
           <Header />
           <Route exact path="/" component={this.renderContent()} />
           <Route exact path="/new" component={New} />
+          <Route exact path="/sign-up" component={Auth} />
+          <Route exact path="/log-in" component={Auth} />
           <Route path="/account" component={Account} />
         </div>
       </Router>

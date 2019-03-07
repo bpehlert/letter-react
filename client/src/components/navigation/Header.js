@@ -8,13 +8,13 @@ class Header extends Component {
   // Checks the auth state of the app to determine if user is logged in.
 
   render() {
-    const { location } = this.props;
+    const { location, auth } = this.props;
 
-    switch (this.props.auth) {
+    switch (auth) {
       case null:
         return <div />;
       case false:
-        return <Landing />;
+        return <Landing location={location} />;
       default:
         return <LoggedIn location={location} />;
     }
