@@ -12,6 +12,17 @@ const Container = styled.div`
   .authText {
     text-align: center;
   }
+
+  .emailInputs {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    button {
+      width: 100px;
+    }
+  }
 `;
 
 export default Container;

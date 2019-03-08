@@ -8,27 +8,27 @@ class EmailForm extends Component {
   render() {
     const { action } = this.props;
 
-    const depends = action === "Sign up" ? true : false;
+    const itDepends = action === "Sign up" ? true : false;
 
     const inputs = [
-      { type: "text", placeholder: "First name", show: depends },
-      { type: "text", placeholder: "Last name", show: depends },
-      { type: "email", placeholder: "Email address", show: true },
-      { type: "password", placeholder: "Password", show: true },
-      { type: "password", placeholder: "Confirm Password", show: depends }
+      { type: "text", text: "First name", show: itDepends },
+      { type: "text", text: "Last name", show: itDepends },
+      { type: "email", text: "Email address", show: true },
+      { type: "password", text: "Password", show: true },
+      { type: "password", text: "Confirm Password", show: itDepends }
     ];
 
     const inputArray = inputs.map(input => (
       <InputStyled
         key={inputs.indexOf(input)}
         type={input.type}
-        placeholder={input.placeholder}
+        placeholder={input.text}
         show={input.show}
       />
     ));
 
     return (
-      <div>
+      <div className="emailInputs">
         {inputArray}
         <Button primary>{action}</Button>
       </div>
