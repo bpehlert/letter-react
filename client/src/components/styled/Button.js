@@ -6,9 +6,10 @@ const Button = styled.button`
   font-size: 1em;
   margin: 1em;
   padding: 0.25em 1em;
-  border: 2px solid #22a7f0;
+  border: 1px solid #22a7f0;
   border-radius: 5px;
   text-decoration: none;
+  cursor: pointer;
 `;
 
 export default Button;

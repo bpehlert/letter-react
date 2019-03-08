@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import Nav from "../styled/Nav";
 import LogoImg from "../styled/LogoImg";
 import ButtonLink from "../styled/ButtonLink";
-import Button from "../styled/Button";
 import Simple from "./Simple";
 
 const Landing = ({ location }) => {
@@ -21,9 +20,7 @@ const Landing = ({ location }) => {
               </ButtonLink>
             </li>
             <li>
-              <Button as="a" href="/auth/google">
-                Sign in
-              </Button>
+              <ButtonLink to="/log-in">Log in</ButtonLink>
             </li>
           </ul>
         </Nav>

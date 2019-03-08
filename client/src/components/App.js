@@ -8,7 +8,7 @@ import Header from "./navigation/Header";
 import Landing from "./Landing";
 import Entries from "./Entries";
 import New from "./entries/New";
-import Auth from "./Auth";
+import Auth from "./auth/Auth";
 import Account from "./Account";
 
 class App extends Component {
