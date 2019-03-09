@@ -19,6 +19,15 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
 
+    .inputDiv {
+      display: ${props => (props.show ? "" : "none")};
+    }
+
+    .error {
+      margin-left: 3px;
+      color: ${props => (props.red ? "#d8000c" : "#4BB543")};
+    }
+
     button {
       width: 100px;
     }

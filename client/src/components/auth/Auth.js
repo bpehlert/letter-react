@@ -4,14 +4,14 @@ import { withRouter } from "react-router-dom";
 import AuthBtns from "./AuthBtns";
 import AuthText from "./AuthText";
 import ContainerAuth from "../styled/ContainerAuth";
-import EmailForm from "./EmailForm";
+import AuthEmailForm from "./AuthEmailForm";
 
 class Auth extends Component {
   state = {
     title: "Sign up",
     altAction: "Log in",
     altPath: "/log-in",
-    showEmailForm: false
+    showEmailForm: true
   };
 
   componentWillMount() {
@@ -55,7 +55,7 @@ class Auth extends Component {
           <AuthBtns action={title} showForm={this.showEmailSignUp} />
         </div>
 
-        {this.state.showEmailForm ? <EmailForm action={title} /> : ""}
+        {this.state.showEmailForm ? <AuthEmailForm action={title} /> : ""}
 
         <div className="authText">
           <AuthText altPath={altPath} altAction={altAction} title={title} />
