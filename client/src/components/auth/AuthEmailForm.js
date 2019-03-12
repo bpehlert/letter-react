@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import InputStyled from "../styled/InputStyled";
 import Button from "../styled/Button";
 import PError from "../styled/PError";
+import PStyled from "../styled/PStyled";
+import LinkStyled from "../styled/LinkStyled";
 
 class AuthEmailForm extends Component {
   state = {
@@ -11,27 +13,29 @@ class AuthEmailForm extends Component {
     emailValid: false,
     password: "",
     passwordConf: "",
-    passwordsMatch: false
+    passwordsMatch: false,
+    passwordsMatchIndicator: ""
   };
 
   onInputChange = e => {
     const field = e.target.id;
-    this.setState({ [field]: e.target.value });
+    const entry = e.target.value;
+    this.setState({ [field]: entry });
 
-    // Check and validate valid email address
-    if (field === "email") {
-      const validEmail = this.validateEmail(e.target.value);
-      this.setState({ emailValid: validEmail });
-    }
-
-    //Check if confirmed password is the same as password.
-    if (field === "passwordConf") {
-      const passwordsMatch = this.checkPasswords(
-        this.state.password,
-        e.target.value
-      );
-      this.setState({ passwordsMatch: passwordsMatch });
-      console.log(this.state.passwordsMatch);
+    switch (field) {
+      case "email":
+        const validEmail = this.validateEmail(entry);
+        this.setState({ emailValid: validEmail });
+        break;
+      case "passwordConf":
+        const passwordsMatch = this.checkPasswords(this.state.password, entry);
+        entry.length === this.state.password.length
+          ? this.setState({ passwordsMatchIndicator: "●" })
+          : this.setState({ passwordsMatchIndicator: "" });
+        this.setState({ passwordsMatch: passwordsMatch });
+        break;
+      default:
+        return;
     }
   };
 
@@ -46,72 +50,85 @@ class AuthEmailForm extends Component {
   };
 
   sendAuth = () => {
+    // Check if form entries are valid.
+
     console.log(this.state);
   };
 
   render() {
     const { action } = this.props;
-    const itDepends = action === "Sign up" ? true : false;
+    const isSignUp = action === "Sign up" ? true : false;
+    const terms = isSignUp ? (
+      <PStyled>
+        By signing up, you agree to our{" "}
+        <LinkStyled to="#">terms and conditions.</LinkStyled>
+      </PStyled>
+    ) : (
+      <PStyled>
+        <LinkStyled to="#">Forgot your password?</LinkStyled>
+      </PStyled>
+    );
 
-    const inputs = [
+    const inputFields = [
       {
         id: "firstName",
         type: "text",
         text: "First name",
-        show: itDepends,
-        message: "Please enter your first name."
+        show: isSignUp
       },
       {
         id: "lastName",
         type: "text",
         text: "Last name",
-        show: itDepends,
-        message: "Please enter your last name."
+        show: isSignUp
       },
       {
         id: "email",
         type: "email",
         text: "Email address",
-        show: true,
-        message: "Please enter a valid email."
+        show: true
       },
       {
         id: "password",
         type: "password",
         text: "Password",
-        show: true,
-        message: ""
+        show: true
       },
       {
         id: "passwordConf",
         type: "password",
         text: "Confirm password",
-        show: itDepends,
-        message: "●"
+        show: isSignUp,
+        message: this.state.passwordsMatchIndicator
       }
     ];
 
-    const inputArray = inputs.map(input => (
-      <div className="inputDiv" show={input.show}>
+    const inputFieldsArray = inputFields.map(input => (
+      <div className="inputDiv" key={input.id}>
         <InputStyled
-          key={input.id}
           id={input.id}
           type={input.type}
           placeholder={input.text}
           onChange={this.onInputChange}
+          show={input.show}
         />
-        <PError className="error" show={input.show}>
-          ●
+        <PError
+          className="error"
+          show={input.show}
+          green={this.state.passwordsMatch}
+        >
+          {input.message}
         </PError>
       </div>
     ));
 
     return (
       <div className="emailInputs">
-        {inputArray}
+        {inputFieldsArray}
         <Button onClick={this.sendAuth} primary>
           {action}
         </Button>
+        {terms}
       </div>
     );
   }

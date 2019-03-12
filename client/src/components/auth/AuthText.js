@@ -6,10 +6,6 @@ const AuthText = ({ altAction, altPath, title }) => {
   return title === "Sign up" ? (
     <div>
       <PStyled>
-        By signing up, you agree to our{" "}
-        <LinkStyled to="#">terms and conditions.</LinkStyled>
-      </PStyled>
-      <PStyled>
         Already have an account?{" "}
         <LinkStyled to={altPath}>{altAction} here.</LinkStyled>
       </PStyled>
@@ -17,10 +13,8 @@ const AuthText = ({ altAction, altPath, title }) => {
   ) : (
     <div>
       <PStyled>
-        <LinkStyled to="#">Forgot your password?</LinkStyled>
-      </PStyled>
-      <PStyled>
-        <LinkStyled to={altPath}>Create an account.</LinkStyled>
+        New to Letter?{" "}
+        <LinkStyled to={altPath}>Create an account here.</LinkStyled>
       </PStyled>
     </div>
   );
