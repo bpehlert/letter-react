@@ -4,6 +4,7 @@ import Button from "../styled/Button";
 import PError from "../styled/PError";
 import PStyled from "../styled/PStyled";
 import LinkStyled from "../styled/LinkStyled";
+import axios from "axios";
 
 class AuthEmailForm extends Component {
   state = {
@@ -51,9 +52,22 @@ class AuthEmailForm extends Component {
 
   sendAuth = () => {
     // Check if form entries are valid.
-
-    console.log(this.state);
+    const { firstName, lastName, email, password } = this.state;
+    const newUser = {
+      name: {
+        firstName: firstName,
+        lastName: lastName
+      },
+      email: email,
+      password: password
+    };
+    this.saveUserToDB("post", "/api/email_auth", newUser);
   };
+
+  async saveUserToDB(type, route, payLoad) {
+    const res = await axios[type](route, payLoad);
+    console.log(res);
+  }
 
   render() {
     const { action } = this.props;
