@@ -61,12 +61,13 @@ class AuthEmailForm extends Component {
       email: email,
       password: password
     };
-    this.saveUserToDB("post", "/api/email_auth", newUser);
+    this.saveUserToDB("post", "/api/email_authenticate", newUser);
   };
 
   async saveUserToDB(type, route, payLoad) {
+    console.log(payLoad);
     const res = await axios[type](route, payLoad);
-    console.log(res);
+    console.log(res.user);
   }
 
   render() {

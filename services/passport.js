@@ -1,5 +1,8 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const LocalStrategy = require("passport-local").Strategy;
+const JwtStrategy = require("passport-jwt").Strategy;
+const ExtractJwt = require("passport-jwt").ExtractJwt;
 const mongoose = require("mongoose");
 const keys = require("../config/keys");
 
@@ -45,3 +48,44 @@ passport.use(
     }
   )
 );
+
+passport.use(
+  new LocalStrategy(
+    {
+      usernameField: "email",
+      passwordField: "password"
+    },
+    async (email, password, done) => {
+      const existingUser = await User.findOne({ email: email });
+      if (!existingUser) {
+        return done(null, false, {
+          message: "Incorrect email or password."
+        });
+      }
+      return done(null, existingUser, { message: "logged in successfully" });
+    }
+  )
+);
+
+// For JWT authentication (email auth)
+
+// let opts = {};
+// opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+// opts.secretOrKey = keys.tokenKey;
+// passport.use(
+//   new JwtStrategy(opts, function(jwt_payload, done) {
+//     console.log(jwt_payload);
+//     User.findOne({ id: jwt_payload.sub }, function(err, user) {
+//       if (err) {
+//         return done("Hello", false);
+//       }
+//       if (user) {
+//         return done(null, user);
+//       } else {
+//         // or you could create a new account
+//         console.log(user);
+//         return done(null, false);
+//       }
+//     });
+//   })
+// );
