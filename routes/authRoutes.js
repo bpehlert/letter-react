@@ -22,25 +22,31 @@ module.exports = app => {
     }
   );
 
-  app.post("/api/email_authenticate", (req, res, next) => {
-    passport.authenticate("local", { session: false }, (err, user, info) => {
-      console.log(req.body);
+  app.post("/api/email_authenticate", passport.authenticate("local")),
+    (req, res) => {
+      console.log(req);
+      res.send(req.body.username);
+    };
 
-      if (err || !user) {
-        return res
-          .status(400)
-          .json({ message: "Something isnt't right", user: user });
-      }
-      req.login(user, { session: false }, err => {
-        if (err) {
-          res.send(err);
-        }
+  // app.post("/api/email_authenticate", (req, res, next) => {
+  //   passport.authenticate("local", { session: false }, (err, user, info) => {
+  //     console.log(req.body);
 
-        const token = jwt.sign(user, keys.tokenKey);
-        return res.json({ user, token });
-      });
-    })(req, res);
-  });
+  //     if (err || !user) {
+  //       return res
+  //         .status(400)
+  //         .json({ message: "Something isnt't right", user: user });
+  //     }
+  //     req.login(user, { session: false }, err => {
+  //       if (err) {
+  //         res.send(err);
+  //       }
+
+  //       const token = jwt.sign(user, keys.tokenKey);
+  //       return res.json({ user, token });
+  //     });
+  //   })(req, res);
+  // });
 
   // app.post("/api/email_auth", async (req, res) => {
   //   const { name, email, password } = req.body;

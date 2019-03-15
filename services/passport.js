@@ -50,21 +50,16 @@ passport.use(
 );
 
 passport.use(
-  new LocalStrategy(
-    {
-      usernameField: "email",
-      passwordField: "password"
-    },
-    async (email, password, done) => {
-      const existingUser = await User.findOne({ email: email });
-      if (!existingUser) {
-        return done(null, false, {
-          message: "Incorrect email or password."
-        });
-      }
-      return done(null, existingUser, { message: "logged in successfully" });
+  new LocalStrategy(async (username, password, done) => {
+    const existingUser = await User.findOne({ email: username });
+
+    if (!existingUser) {
+      return done(null, false, {
+        message: "Incorrect email or password."
+      });
     }
-  )
+    return done(null, existingUser);
+  })
 );
 
 // For JWT authentication (email auth)
