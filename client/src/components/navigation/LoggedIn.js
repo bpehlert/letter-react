@@ -43,7 +43,10 @@ class LoggedIn extends Component {
 
           <DropDownContainer>
             <ProfileImg
-              src={this.props.auth.photoURL}
+              src={
+                this.props.auth.photoURL ||
+                require("../../assets/default_profile.png")
+              }
               onClick={this.showMenu}
               ref={e => {
                 this.profileMenu = e;
