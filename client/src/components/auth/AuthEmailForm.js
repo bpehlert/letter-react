@@ -66,7 +66,7 @@ class AuthEmailForm extends Component {
 
   async saveUserToDB(type, route, payLoad) {
     const res = await axios[type](route, payLoad);
-    console.log(res.user);
+    console.log(res);
   }
 
   render() {

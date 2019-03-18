@@ -37,11 +37,11 @@ userSchema.pre("save", function(next) {
 });
 
 userSchema.methods.isCorrectPassword = function(password, callback) {
-  bcrypt.compare(password, this.password, function(err, same) {
+  bcrypt.compare(password, this.password, function(err, isMatch) {
     if (err) {
       callback(err);
     } else {
-      callback(err, same);
+      callback(err, isMatch);
     }
   });
 };
