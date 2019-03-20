@@ -51,8 +51,8 @@ class AuthEmailForm extends Component {
   };
 
   sendAuth = () => {
-    // Check if form entries are valid.
     const { firstName, lastName, email, password } = this.state;
+    const { action } = this.props;
     const newUser = {
       name: {
         firstName: firstName,
@@ -61,7 +61,13 @@ class AuthEmailForm extends Component {
       username: email,
       password: password
     };
-    this.saveUserToDB("post", "/api/email_authenticate", newUser);
+    const authenticateUser = {
+      username: email,
+      password: password
+    };
+    action === "Sign up"
+      ? this.saveUserToDB("post", "/api/email_authenticate", newUser)
+      : this.saveUserToDB("post", "/api/local_auth", authenticateUser);
   };
 
   async saveUserToDB(type, route, payLoad) {
