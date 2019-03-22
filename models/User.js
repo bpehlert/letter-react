@@ -36,13 +36,10 @@ userSchema.pre("save", function(next) {
   }
 });
 
-userSchema.methods.isCorrectPassword = function(password, callback) {
+userSchema.methods.validatePassword = function(password, cb) {
   bcrypt.compare(password, this.password, function(err, isMatch) {
-    if (err) {
-      callback(err);
-    } else {
-      callback(err, isMatch);
-    }
+    if (err) return cb(err);
+    cb(err, isMatch);
   });
 };
 

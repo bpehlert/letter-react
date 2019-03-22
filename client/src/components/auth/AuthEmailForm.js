@@ -58,11 +58,11 @@ class AuthEmailForm extends Component {
         firstName: firstName,
         lastName: lastName
       },
-      username: email,
+      email: email,
       password: password
     };
     const userToAuthenticate = {
-      username: email,
+      email: email,
       password: password
     };
     action === "Sign up"
@@ -79,6 +79,7 @@ class AuthEmailForm extends Component {
   }
 
   async authUser(type, route, payLoad) {
+    console.log(payLoad);
     const res = await axios[type](route, payLoad);
     console.log(res);
   }

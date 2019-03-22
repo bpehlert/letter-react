@@ -22,24 +22,19 @@ module.exports = app => {
     }
   );
 
-  app.post(
-    "/api/email_authenticate",
-    passport.authenticate("local", {
-      successRedirect: "/",
-      failureRedirect: "/log-in",
-      failureFlash: true
-    })
-  );
+  app.post("/api/local_auth", passport.authenticate("local"), (req, res) => {
+    res.redirect("/");
+  });
 
   app.post("/api/email_signup", async (req, res) => {
-    const { name, username, password } = req.body;
-    const existingUser = await User.findOne({ email: username });
+    const { name, email, password } = req.body;
+    const existingUser = await User.findOne({ email: email });
     if (existingUser) {
       return res.send(existingUser, { message: "User already exists" });
     }
     const user = new User({
       name,
-      email: username,
+      email: email,
       password
     });
     try {

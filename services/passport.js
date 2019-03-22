@@ -50,38 +50,19 @@ passport.use(
 );
 
 passport.use(
-  new LocalStrategy(async (username, password, done) => {
-    User.findOne({ username })
-      .then(user => {
-        if (!user || !user.isCorrectPassword(password)) {
-          done(null, false, { message: "Incorrect email or password." });
-        } else {
-          done(null, user);
-        }
-      })
-      .catch(e => done(e));
-  })
+  new LocalStrategy(
+    { usernameField: "email", passwordField: "password" },
+    (username, password, done) => {
+      User.findOne({ email: username })
+        .then(user => {
+          if (!user || !user.validatePassword(password)) {
+            return done(null, false, {
+              errors: { "email or password": "is invalid" }
+            });
+          }
+          return done(null, user);
+        })
+        .catch(done);
+    }
+  )
 );
-
-// For JWT authentication (email auth)
-
-// let opts = {};
-// opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-// opts.secretOrKey = keys.tokenKey;
-// passport.use(
-//   new JwtStrategy(opts, function(jwt_payload, done) {
-//     console.log(jwt_payload);
-//     User.findOne({ id: jwt_payload.sub }, function(err, user) {
-//       if (err) {
-//         return done("Hello", false);
-//       }
-//       if (user) {
-//         return done(null, user);
-//       } else {
-//         // or you could create a new account
-//         console.log(user);
-//         return done(null, false);
-//       }
-//     });
-//   })
-// );
