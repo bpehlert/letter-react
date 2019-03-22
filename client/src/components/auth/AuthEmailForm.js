@@ -50,7 +50,7 @@ class AuthEmailForm extends Component {
     return match;
   };
 
-  sendAuth = () => {
+  onAuthClick = () => {
     const { firstName, lastName, email, password } = this.state;
     const { action } = this.props;
     const newUser = {
@@ -61,13 +61,13 @@ class AuthEmailForm extends Component {
       username: email,
       password: password
     };
-    const authenticateUser = {
+    const userToAuthenticate = {
       username: email,
       password: password
     };
     action === "Sign up"
       ? this.saveUserToDB("post", "/api/email_signup", newUser)
-      : this.authUser("post", "/api/local_auth", authenticateUser);
+      : this.authUser("post", "/api/local_auth", userToAuthenticate);
   };
 
   async saveUserToDB(type, route, payLoad) {
@@ -153,7 +153,7 @@ class AuthEmailForm extends Component {
     return (
       <div className="emailInputs">
         {inputFieldsArray}
-        <Button onClick={this.sendAuth} primary>
+        <Button onClick={this.onAuthClick} primary>
           {action}
         </Button>
         {terms}
