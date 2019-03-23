@@ -37,9 +37,9 @@ userSchema.pre("save", function(next) {
 });
 
 userSchema.methods.validatePassword = async function(password, cb) {
-  await bcrypt.compare(password, this.password, function(err, result) {
+  await bcrypt.compare(password, this.password, function(err, isMatch) {
     if (err) return cb(err);
-    cb(err, result);
+    cb(err, isMatch);
   });
 };
 

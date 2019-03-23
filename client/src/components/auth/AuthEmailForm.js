@@ -63,12 +63,14 @@ class AuthEmailForm extends Component {
           password: password
         };
         this.saveUserToDB("post", "/api/email_signup", newUser);
+        break;
       case "Log in":
         const userCredentials = {
           email: email,
           password: password
         };
         this.authUser("post", "/api/local_auth", userCredentials);
+        break;
       default:
         return;
     }

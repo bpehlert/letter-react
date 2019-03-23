@@ -56,8 +56,8 @@ passport.use(
       const existingUser = await User.findOne({ email: username });
       if (!existingUser)
         return done(err, false, { message: "Incorrect email" });
-      existingUser.validatePassword(password, (err, result) => {
-        if (result) return done(null, existingUser);
+      existingUser.validatePassword(password, (err, isMatch) => {
+        if (isMatch) return done(null, existingUser);
         else done(null, false, { message: "Incorrect password." });
       });
     }
