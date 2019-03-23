@@ -52,17 +52,14 @@ passport.use(
 passport.use(
   new LocalStrategy(
     { usernameField: "email", passwordField: "password" },
-    (username, password, done) => {
-      User.findOne({ email: username })
-        .then(user => {
-          if (!user || !user.validatePassword(password)) {
-            return done(null, false, {
-              errors: { "email or password": "is invalid" }
-            });
-          }
-          return done(null, user);
-        })
-        .catch(done);
+    async (username, password, done) => {
+      const existingUser = await User.findOne({ email: username });
+      if (!existingUser)
+        return done(err, false, { message: "Incorrect email" });
+      existingUser.validatePassword(password, (err, result) => {
+        if (result) return done(null, existingUser);
+        else done(null, false, { message: "Incorrect password." });
+      });
     }
   )
 );

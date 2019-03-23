@@ -14,8 +14,7 @@ class AuthEmailForm extends Component {
     emailValid: false,
     password: "",
     passwordConf: "",
-    passwordsMatch: false,
-    passwordsMatchIndicator: ""
+    passwordsMatch: false
   };
 
   onInputChange = e => {
@@ -50,36 +49,43 @@ class AuthEmailForm extends Component {
     return match;
   };
 
-  onAuthClick = () => {
+  onClick = () => {
     const { firstName, lastName, email, password } = this.state;
     const { action } = this.props;
-    const newUser = {
-      name: {
-        firstName: firstName,
-        lastName: lastName
-      },
-      email: email,
-      password: password
-    };
-    const userToAuthenticate = {
-      email: email,
-      password: password
-    };
-    action === "Sign up"
-      ? this.saveUserToDB("post", "/api/email_signup", newUser)
-      : this.authUser("post", "/api/local_auth", userToAuthenticate);
+    switch (action) {
+      case "Sign up":
+        const newUser = {
+          name: {
+            firstName: firstName,
+            lastName: lastName
+          },
+          email: email,
+          password: password
+        };
+        this.saveUserToDB("post", "/api/email_signup", newUser);
+      case "Log in":
+        const userCredentials = {
+          email: email,
+          password: password
+        };
+        this.authUser("post", "/api/local_auth", userCredentials);
+      default:
+        return;
+    }
   };
 
   async saveUserToDB(type, route, payLoad) {
     // Add in middleware to confirm email address.
-
     const res = await axios[type](route, payLoad);
     console.log(res);
-    this.authUser("post", "/api/local_auth", res.data);
+    const userToAuth = {
+      email: res.data.email,
+      password: payLoad.password
+    };
+    this.authUser("post", "/api/local_auth", userToAuth);
   }
 
   async authUser(type, route, payLoad) {
-    console.log(payLoad);
     const res = await axios[type](route, payLoad);
     console.log(res);
   }
@@ -87,16 +93,6 @@ class AuthEmailForm extends Component {
   render() {
     const { action } = this.props;
     const isSignUp = action === "Sign up" ? true : false;
-    const terms = isSignUp ? (
-      <PStyled>
-        By signing up, you agree to our{" "}
-        <LinkStyled to="#">terms and conditions.</LinkStyled>
-      </PStyled>
-    ) : (
-      <PStyled>
-        <LinkStyled to="#">Forgot your password?</LinkStyled>
-      </PStyled>
-    );
 
     const inputFields = [
       {
@@ -128,7 +124,7 @@ class AuthEmailForm extends Component {
         type: "password",
         text: "Confirm password",
         show: isSignUp,
-        message: this.state.passwordsMatchIndicator
+        message: "●"
       }
     ];
 
@@ -141,20 +137,27 @@ class AuthEmailForm extends Component {
           onChange={this.onInputChange}
           show={input.show}
         />
-        <PError
-          className="error"
-          show={input.show}
-          green={this.state.passwordsMatch}
-        >
+        <PError className="error" show={input.show}>
           {input.message}
         </PError>
       </div>
     ));
 
+    const terms = isSignUp ? (
+      <PStyled>
+        By signing up, you agree to our{" "}
+        <LinkStyled to="#">terms and conditions.</LinkStyled>
+      </PStyled>
+    ) : (
+      <PStyled>
+        <LinkStyled to="#">Forgot your password?</LinkStyled>
+      </PStyled>
+    );
+
     return (
       <div className="emailInputs">
         {inputFieldsArray}
-        <Button onClick={this.onAuthClick} primary>
+        <Button onClick={this.onClick} primary>
           {action}
         </Button>
         {terms}

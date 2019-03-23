@@ -36,10 +36,10 @@ userSchema.pre("save", function(next) {
   }
 });
 
-userSchema.methods.validatePassword = function(password, cb) {
-  bcrypt.compare(password, this.password, function(err, isMatch) {
+userSchema.methods.validatePassword = async function(password, cb) {
+  await bcrypt.compare(password, this.password, function(err, result) {
     if (err) return cb(err);
-    cb(err, isMatch);
+    cb(err, result);
   });
 };
 
