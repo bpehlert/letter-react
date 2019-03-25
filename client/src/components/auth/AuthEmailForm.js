@@ -78,18 +78,23 @@ class AuthEmailForm extends Component {
 
   async saveUserToDB(type, route, payLoad) {
     // Add in middleware to confirm email address.
-    const res = await axios[type](route, payLoad);
-    console.log(res);
-    const userToAuth = {
-      email: res.data.email,
-      password: payLoad.password
-    };
-    this.authUser("post", "/api/local_auth", userToAuth);
+
+    try {
+      const res = await axios[type](route, payLoad);
+      const userToAuth = {
+        email: res.data.email,
+        password: payLoad.password
+      };
+      this.authUser("post", "/api/local_auth", userToAuth);
+    } catch (err) {
+      if (err.response.status === 409) console.log("User already exists.");
+      if (err.response.status === 422)
+        console.log("The Server failed to create an account.");
+    }
   }
 
   async authUser(type, route, payLoad) {
     const res = await axios[type](route, payLoad);
-    console.log(res);
   }
 
   render() {

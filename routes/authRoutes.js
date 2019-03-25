@@ -30,9 +30,7 @@ module.exports = app => {
     const { name, email, password } = req.body;
     const existingUser = await User.findOne({ email: email });
     if (existingUser) {
-      console.log(existingUser);
-
-      return res.send({ message: "User already exists" });
+      return res.status(409).send({ message: "User already exists" });
     }
     const user = new User({
       name,

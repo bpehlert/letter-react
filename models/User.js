@@ -11,6 +11,7 @@ const userSchema = new Schema({
     lastName: String
   },
   email: String,
+  emailVerified: false,
   password: String,
   photoURL: String,
   entries: { type: Number, default: 0 }
