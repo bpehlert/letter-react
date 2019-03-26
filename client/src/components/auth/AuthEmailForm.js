@@ -1,10 +1,13 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import InputStyled from "../styled/InputStyled";
 import Button from "../styled/Button";
 import PError from "../styled/PError";
 import PStyled from "../styled/PStyled";
 import LinkStyled from "../styled/LinkStyled";
 import axios from "axios";
+import { connect } from "react-redux";
+import * as actions from "../../actions";
 
 class AuthEmailForm extends Component {
   state = {
@@ -14,7 +17,8 @@ class AuthEmailForm extends Component {
     emailValid: false,
     password: "",
     passwordConf: "",
-    passwordsMatch: false
+    passwordsMatch: false,
+    redirect: false
   };
 
   onInputChange = e => {
@@ -40,8 +44,7 @@ class AuthEmailForm extends Component {
   };
 
   validateEmail = email => {
-    const regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return regEx.test(email);
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
   checkPasswords = (password, passwordConf) => {
@@ -94,11 +97,18 @@ class AuthEmailForm extends Component {
   }
 
   async authUser(type, route, payLoad) {
-    const res = await axios[type](route, payLoad);
+    try {
+      await axios[type](route, payLoad);
+      await this.props.fetchUser();
+      if (this.props.auth) this.setState({ redirect: true });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   render() {
     const { action } = this.props;
+    const { redirect } = this.state;
     const isSignUp = action === "Sign up" ? true : false;
 
     const inputFields = [
@@ -134,6 +144,8 @@ class AuthEmailForm extends Component {
         message: "●"
       }
     ];
+
+    if (redirect) return <Redirect to="/" />;
 
     const inputFieldsArray = inputFields.map(input => (
       <div className="inputDiv" key={input.id}>
@@ -173,4 +185,11 @@ class AuthEmailForm extends Component {
   }
 }
 
-export default AuthEmailForm;
+function mapStateToProps(state) {
+  return { auth: state.auth };
+}
+
+export default connect(
+  mapStateToProps,
+  actions
+)(AuthEmailForm);
