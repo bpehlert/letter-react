@@ -11,7 +11,7 @@ class Auth extends Component {
     title: "Sign up",
     altAction: "Log in",
     altPath: "/log-in",
-    showEmailForm: false
+    showEmailForm: true
   };
 
   componentWillMount() {
@@ -43,24 +43,26 @@ class Auth extends Component {
     const { title, altAction, altPath } = this.state;
 
     return (
-      <ContainerAuth>
-        <img
-          className="logo"
-          src={require("../../assets/index_logo.png")}
-          width="150px"
-          alt="Letter"
-        />
-        <h1>{title}</h1>
-        <div className="btns">
-          <AuthBtns action={title} showForm={this.showEmailSignUp} />
-        </div>
+      <div>
+        <ContainerAuth>
+          <img
+            className="logo"
+            src={require("../../assets/index_logo.png")}
+            width="150px"
+            alt="Letter"
+          />
+          <h1>{title}</h1>
+          <div className="btns">
+            <AuthBtns action={title} showForm={this.showEmailSignUp} />
+          </div>
 
-        {this.state.showEmailForm ? <AuthEmailForm action={title} /> : ""}
+          {this.state.showEmailForm ? <AuthEmailForm action={title} /> : ""}
 
-        <div className="authText">
-          <AuthText altPath={altPath} altAction={altAction} title={title} />
-        </div>
-      </ContainerAuth>
+          <div className="authText">
+            <AuthText altPath={altPath} altAction={altAction} title={title} />
+          </div>
+        </ContainerAuth>
+      </div>
     );
   }
 }

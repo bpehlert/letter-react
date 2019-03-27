@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import InputStyled from "../styled/InputStyled";
 import Button from "../styled/Button";
 import PError from "../styled/PError";
 import PStyled from "../styled/PStyled";
+import Message from "../styled/Message";
 import LinkStyled from "../styled/LinkStyled";
 import axios from "axios";
 import { connect } from "react-redux";
@@ -11,6 +13,7 @@ import * as actions from "../../actions";
 
 class AuthEmailForm extends Component {
   state = {
+    path: this.props.location.pathname,
     firstName: "",
     lastName: "",
     email: "",
@@ -18,7 +21,10 @@ class AuthEmailForm extends Component {
     password: "",
     passwordConf: "",
     passwordsMatch: false,
-    redirect: false
+    showMessage: false,
+    errorMessage: "",
+    redirect: false,
+    redirectRoute: ""
   };
 
   onInputChange = e => {
@@ -53,7 +59,30 @@ class AuthEmailForm extends Component {
   };
 
   onClick = () => {
-    const { firstName, lastName, email, password } = this.state;
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      emailValid,
+      passwordsMatch
+    } = this.state;
+
+    if (!emailValid) {
+      this.setState({
+        showMessage: true,
+        errorMessage: "Please enter a valid email address."
+      });
+      return;
+    }
+    if (!passwordsMatch) {
+      this.setState({
+        showMessage: true,
+        errorMessage: "Your passwords do not match."
+      });
+      return;
+    }
+
     const { action } = this.props;
     switch (action) {
       case "Sign up":
@@ -90,9 +119,14 @@ class AuthEmailForm extends Component {
       };
       this.authUser("post", "/api/local_auth", userToAuth);
     } catch (err) {
-      if (err.response.status === 409) console.log("User already exists.");
+      // User exists
+      if (err.response.status === 409) {
+        alert("It looks like you already have an account with us.");
+        this.changeRoute("/log-in");
+      }
+      // Failure to create an account
       if (err.response.status === 422)
-        console.log("The Server failed to create an account.");
+        alert("The Server failed to create an account.");
     }
   }
 
@@ -100,16 +134,20 @@ class AuthEmailForm extends Component {
     try {
       await axios[type](route, payLoad);
       await this.props.fetchUser();
-      if (this.props.auth) this.setState({ redirect: true });
+      if (this.props.auth) this.changeRoute("/");
     } catch (err) {
       console.log(err);
     }
   }
 
+  changeRoute(route) {
+    this.setState({ redirect: true, redirectRoute: route });
+  }
+
   render() {
     const { action } = this.props;
-    const { redirect } = this.state;
     const isSignUp = action === "Sign up" ? true : false;
+    const { redirect, redirectRoute } = this.state;
 
     const inputFields = [
       {
@@ -141,11 +179,9 @@ class AuthEmailForm extends Component {
         type: "password",
         text: "Confirm password",
         show: isSignUp,
-        message: "●"
+        message: ""
       }
     ];
-
-    if (redirect) return <Redirect to="/" />;
 
     const inputFieldsArray = inputFields.map(input => (
       <div className="inputDiv" key={input.id}>
@@ -173,9 +209,14 @@ class AuthEmailForm extends Component {
       </PStyled>
     );
 
+    if (redirect) return <Redirect to={redirectRoute} />;
+
     return (
       <div className="emailInputs">
         {inputFieldsArray}
+        <Message show={this.state.showMessage}>
+          {this.state.errorMessage}
+        </Message>
         <Button onClick={this.onClick} primary>
           {action}
         </Button>
@@ -189,7 +230,9 @@ function mapStateToProps(state) {
   return { auth: state.auth };
 }
 
-export default connect(
-  mapStateToProps,
-  actions
-)(AuthEmailForm);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    actions
+  )(AuthEmailForm)
+);
