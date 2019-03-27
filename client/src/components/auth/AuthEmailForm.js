@@ -48,7 +48,7 @@ class AuthEmailForm extends Component {
         return;
     }
   };
-
+  // IS this working
   validateEmail = email => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
