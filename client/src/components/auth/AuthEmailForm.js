@@ -11,6 +11,9 @@ import axios from "axios";
 import { connect } from "react-redux";
 import * as actions from "../../actions";
 
+const SIGN_UP = "Sign up";
+const LOG_IN = "Log in";
+
 class AuthEmailForm extends Component {
   state = {
     path: this.props.location.pathname,
@@ -23,6 +26,7 @@ class AuthEmailForm extends Component {
     passwordsMatch: false,
     showMessage: false,
     errorMessage: "",
+    isErr: "",
     redirect: false,
     redirectRoute: ""
   };
@@ -48,7 +52,7 @@ class AuthEmailForm extends Component {
         return;
     }
   };
-  // IS this working
+
   validateEmail = email => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
@@ -59,6 +63,7 @@ class AuthEmailForm extends Component {
   };
 
   onClick = () => {
+    const { action } = this.props;
     const {
       firstName,
       lastName,
@@ -68,24 +73,22 @@ class AuthEmailForm extends Component {
       passwordsMatch
     } = this.state;
 
-    if (!emailValid) {
-      this.setState({
-        showMessage: true,
-        errorMessage: "Please enter a valid email address."
-      });
-      return;
+    // Check for valid form submission
+    if (action === SIGN_UP && (!firstName || !lastName)) {
+      return this.showMessage("Please enter your first and last name.", true);
     }
-    if (!passwordsMatch) {
-      this.setState({
-        showMessage: true,
-        errorMessage: "Your passwords do not match."
-      });
-      return;
+    if (!emailValid) {
+      return this.showMessage("Please enter a valid email address.", true);
+    }
+    if (action === SIGN_UP && !passwordsMatch) {
+      return this.showMessage("Your passwords do not match.", true);
+    }
+    if (action === LOG_IN && !password) {
+      return this.showMessage("Please enter your password.", true);
     }
 
-    const { action } = this.props;
     switch (action) {
-      case "Sign up":
+      case SIGN_UP:
         const newUser = {
           name: {
             firstName: firstName,
@@ -96,7 +99,7 @@ class AuthEmailForm extends Component {
         };
         this.saveUserToDB("post", "/api/email_signup", newUser);
         break;
-      case "Log in":
+      case LOG_IN:
         const userCredentials = {
           email: email,
           password: password
@@ -107,6 +110,22 @@ class AuthEmailForm extends Component {
         return;
     }
   };
+
+  showMessage(message, isErr) {
+    this.setState({
+      showMessage: true,
+      errorMessage: message,
+      isErr
+    });
+
+    this.timer = setTimeout(() => {
+      this.setState({ errorMessage: message });
+      this.showTimer = setTimeout(
+        () => this.setState({ showMessage: false }),
+        2000
+      );
+    }, 500);
+  }
 
   async saveUserToDB(type, route, payLoad) {
     // Add in middleware to confirm email address.
@@ -146,7 +165,7 @@ class AuthEmailForm extends Component {
 
   render() {
     const { action } = this.props;
-    const isSignUp = action === "Sign up" ? true : false;
+    const isSignUp = action === SIGN_UP ? true : false;
     const { redirect, redirectRoute } = this.state;
 
     const inputFields = [
@@ -214,7 +233,7 @@ class AuthEmailForm extends Component {
     return (
       <div className="emailInputs">
         {inputFieldsArray}
-        <Message show={this.state.showMessage}>
+        <Message show={this.state.showMessage} isErr={this.state.isErr}>
           {this.state.errorMessage}
         </Message>
         <Button onClick={this.onClick} primary>
