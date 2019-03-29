@@ -24,7 +24,7 @@ module.exports = app => {
     res.redirect("/");
   });
 
-  app.post("/api/email_signup", async (req, res) => {
+  app.post("/api/email_sign_up", async (req, res) => {
     const { name, email, password } = req.body;
     const existingUser = await User.findOne({ email: email });
     if (existingUser) {
