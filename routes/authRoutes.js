@@ -1,8 +1,6 @@
 const passport = require("passport");
 const mongoose = require("mongoose");
 const User = mongoose.model("users");
-const jwt = require("jsonwebtoken");
-const keys = require("../config/keys");
 
 // to use route handlers, we export the routes as the body of a function,
 // that is immidiately exported. This function is then ran through the index.js file.
