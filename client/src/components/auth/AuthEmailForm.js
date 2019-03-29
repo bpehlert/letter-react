@@ -3,7 +3,6 @@ import { Redirect } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import InputStyled from "../styled/InputStyled";
 import Button from "../styled/Button";
-import PError from "../styled/PError";
 import PStyled from "../styled/PStyled";
 import Message from "../styled/Message";
 import LinkStyled from "../styled/LinkStyled";
@@ -23,6 +22,7 @@ class AuthEmailForm extends Component {
     emailValid: false,
     password: "",
     passwordConf: "",
+    passwordValid: false,
     passwordsMatch: false,
     showMessage: false,
     errorMessage: "",
@@ -30,6 +30,10 @@ class AuthEmailForm extends Component {
     redirect: false,
     redirectRoute: ""
   };
+
+  componentWillUnmount() {
+    clearTimeout(this.timer);
+  }
 
   onInputChange = e => {
     const field = e.target.id;
@@ -41,11 +45,12 @@ class AuthEmailForm extends Component {
         const validEmail = this.validateEmail(entry);
         this.setState({ emailValid: validEmail });
         break;
+      case "password":
+        const validPassword = this.validatePassword(entry);
+        this.setState({ passwordValid: validPassword });
+        break;
       case "passwordConf":
         const passwordsMatch = this.checkPasswords(this.state.password, entry);
-        entry.length === this.state.password.length
-          ? this.setState({ passwordsMatchIndicator: "●" })
-          : this.setState({ passwordsMatchIndicator: "" });
         this.setState({ passwordsMatch: passwordsMatch });
         break;
       default:
@@ -55,6 +60,10 @@ class AuthEmailForm extends Component {
 
   validateEmail = email => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  validatePassword = password => {
+    return /^(?=.{8,})/.test(password);
   };
 
   checkPasswords = (password, passwordConf) => {
@@ -70,6 +79,7 @@ class AuthEmailForm extends Component {
       email,
       password,
       emailValid,
+      passwordValid,
       passwordsMatch
     } = this.state;
 
@@ -79,6 +89,12 @@ class AuthEmailForm extends Component {
     }
     if (!emailValid) {
       return this.showMessage("Please enter a valid email address.", true);
+    }
+    if (!passwordValid) {
+      return this.showMessage(
+        "Your password must contain at leaset 8 characters.",
+        true
+      );
     }
     if (action === SIGN_UP && !passwordsMatch) {
       return this.showMessage("Your passwords do not match.", true);
@@ -111,22 +127,6 @@ class AuthEmailForm extends Component {
     }
   };
 
-  showMessage(message, isErr) {
-    this.setState({
-      showMessage: true,
-      errorMessage: message,
-      isErr
-    });
-
-    this.timer = setTimeout(() => {
-      this.setState({ errorMessage: message });
-      this.showTimer = setTimeout(
-        () => this.setState({ showMessage: false }),
-        2000
-      );
-    }, 500);
-  }
-
   async saveUserToDB(type, route, payLoad) {
     // Add in middleware to confirm email address.
 
@@ -140,12 +140,14 @@ class AuthEmailForm extends Component {
     } catch (err) {
       // User exists
       if (err.response.status === 409) {
-        alert("It looks like you already have an account with us.");
-        this.changeRoute("/log-in");
+        this.showMessage(
+          "It looks like you already have an account with us.",
+          false
+        );
       }
       // Failure to create an account
       if (err.response.status === 422)
-        alert("The Server failed to create an account.");
+        this.showMessage("The Server failed to create an account.", true);
     }
   }
 
@@ -156,7 +158,20 @@ class AuthEmailForm extends Component {
       if (this.props.auth) this.changeRoute("/");
     } catch (err) {
       console.log(err);
+      this.showMessage("Incorrect username or password.", true);
     }
+  }
+
+  showMessage(message, isErr) {
+    this.setState({
+      showMessage: true,
+      errorMessage: message,
+      isErr
+    });
+    this.timer = setTimeout(() => {
+      this.setState({ showMessage: false });
+      if (!isErr) this.changeRoute("/log-in");
+    }, 2200);
   }
 
   changeRoute(route) {
@@ -197,8 +212,7 @@ class AuthEmailForm extends Component {
         id: "passwordConf",
         type: "password",
         text: "Confirm password",
-        show: isSignUp,
-        message: ""
+        show: isSignUp
       }
     ];
 
@@ -211,9 +225,6 @@ class AuthEmailForm extends Component {
           onChange={this.onInputChange}
           show={input.show}
         />
-        <PError className="error" show={input.show}>
-          {input.message}
-        </PError>
       </div>
     ));
 
@@ -233,12 +244,12 @@ class AuthEmailForm extends Component {
     return (
       <div className="emailInputs">
         {inputFieldsArray}
-        <Message show={this.state.showMessage} isErr={this.state.isErr}>
-          {this.state.errorMessage}
-        </Message>
         <Button onClick={this.onClick} primary>
           {action}
         </Button>
+        <Message show={this.state.showMessage} isErr={this.state.isErr}>
+          {this.state.errorMessage}
+        </Message>
         {terms}
       </div>
     );

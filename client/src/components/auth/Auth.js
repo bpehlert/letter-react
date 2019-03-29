@@ -11,7 +11,7 @@ class Auth extends Component {
     title: "Sign up",
     altAction: "Log in",
     altPath: "/log-in",
-    showEmailForm: true
+    showEmailForm: false
   };
 
   componentWillMount() {
