@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import * as actions from "../actions";
 import GlobalStyle from "../theme/global";
@@ -28,16 +28,27 @@ class App extends Component {
   }
 
   render() {
+    console.log(this.props);
+
+    const PrivateRoute = ({ component: Component, ...rest }) => (
+      <Route
+        {...rest}
+        render={props =>
+          this.props.auth ? <Component {...props} /> : <Redirect to="/log-in" />
+        }
+      />
+    );
+
     return (
       <Router>
         <div>
           <GlobalStyle />
           <Header />
           <Route exact path="/" component={this.renderContent()} />
-          <Route exact path="/new" component={New} />
           <Route exact path="/sign-up" component={Auth} />
           <Route exact path="/log-in" component={Auth} />
-          <Route path="/account" component={Account} />
+          <PrivateRoute exact path="/new" component={New} />
+          <PrivateRoute path="/account" component={Account} />
         </div>
       </Router>
     );

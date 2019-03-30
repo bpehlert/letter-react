@@ -1,11 +1,18 @@
-import React from "react";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
-const Account = () => {
-  return (
-    <div>
-      <p>Account Settings</p>
-    </div>
-  );
-};
+class Account extends Component {
+  render() {
+    return (
+      <div>
+        <p>Account Settings</p>
+      </div>
+    );
+  }
+}
 
-export default Account;
+function mapStateToProps(state) {
+  return { auth: state.auth };
+}
+
+export default connect(mapStateToProps)(Account);

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { withRouter, Redirect } from "react-router-dom";
 
 import AuthBtns from "./AuthBtns";
 import AuthText from "./AuthText";
@@ -11,10 +12,12 @@ class Auth extends Component {
     title: "Sign up",
     altAction: "Log in",
     altPath: "/log-in",
-    showEmailForm: false
+    showEmailForm: false,
+    redirect: false
   };
 
   componentWillMount() {
+    if (this.props.auth) return this.setState({ redirect: true });
     const { pathname } = this.props.location;
     switch (pathname) {
       case "/sign-in":
@@ -40,7 +43,9 @@ class Auth extends Component {
   };
 
   render() {
-    const { title, altAction, altPath } = this.state;
+    const { title, altAction, altPath, redirect } = this.state;
+
+    if (redirect) return <Redirect to={"/"} />;
 
     return (
       <div>
@@ -67,4 +72,8 @@ class Auth extends Component {
   }
 }
 
-export default withRouter(Auth);
+function mapStateToProps(state) {
+  return { auth: state.auth };
+}
+
+export default withRouter(connect(mapStateToProps)(Auth));
