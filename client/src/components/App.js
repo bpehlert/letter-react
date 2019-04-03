@@ -48,7 +48,7 @@ class App extends Component {
           <Route exact path="/sign-up" component={Auth} />
           <Route exact path="/log-in" component={Auth} />
           <PrivateRoute exact path="/new" component={New} />
-          <PrivateRoute path="/account" component={Account} />
+          <Route path="/account" component={Account} />
         </div>
       </Router>
     );
