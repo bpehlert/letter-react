@@ -15,6 +15,7 @@ class Account extends Component {
         <p>{lastName}</p>
         <h3>Account</h3>
         <p>{email}</p>
+        <a>Change account password.</a>
       </div>
     );
   }
