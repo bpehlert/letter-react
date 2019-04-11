@@ -13,6 +13,8 @@ class Account extends Component {
         <h3>Name</h3>
         <p>{firstName}</p>
         <p>{lastName}</p>
+        <h3>Number of Entries</h3>
+        <p>{entries}</p>
         <h3>Account</h3>
         <p>{email}</p>
         <a>Change your email</a>
