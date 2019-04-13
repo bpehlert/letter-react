@@ -4,6 +4,8 @@ import * as actions from "../actions";
 
 class Account extends Component {
   componentDidMount() {
+    // Add in method to fetch just number of entries.
+
     this.props.fetchUser();
   }
 
