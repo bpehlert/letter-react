@@ -26,6 +26,9 @@ class Account extends Component {
         <p>{email}</p>
         <a href="#">Change your email</a>
         <a href="#">Change account password</a>
+        <h3>Prompt Settings</h3>
+        <h4>Mobile number</h4>
+        <p>###-###-####</p>
       </div>
     );
   }
