@@ -199,7 +199,7 @@ class AuthEmailForm extends Component {
       {
         id: "email",
         type: "email",
-        text: "Email address",
+        text: "Email",
         show: true
       },
       {

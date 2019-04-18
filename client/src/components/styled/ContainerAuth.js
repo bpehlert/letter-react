@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Container = styled.div`
+const ContainerAuth = styled.div`
   margin: 50px 25%;
   display: flex;
   flex-direction: column;
@@ -31,4 +31,4 @@ const Container = styled.div`
   }
 `;
 
-export default Container;
+export default ContainerAuth;
