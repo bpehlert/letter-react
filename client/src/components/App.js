@@ -45,7 +45,7 @@ class App extends Component {
           <Route exact path="/" component={this.renderContent()} />
           <Route exact path="/sign-up" component={Auth} />
           <Route exact path="/log-in" component={Auth} />
-          <PrivateRoute exact path="/new" component={New} />
+          <Route exact path="/new" component={New} />
           <Route path="/account" component={Account} />
         </div>
       </Router>

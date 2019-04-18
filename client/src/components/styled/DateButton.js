@@ -4,12 +4,17 @@ const DateButton = styled.button`
   background: none;
   border: none;
   text-align: left;
+  padding: 0px;
+  margin-bottom: 10px;
   outline: none;
-  padding: 0 0 10px 0;
   font-size: 1em;
-
-  display: flex;
   cursor: pointer;
+  display: flex;
+  align-items: baseline;
+
+  h3 {
+    margin-left: 10px;
+  }
 `;
 
 export default DateButton;
