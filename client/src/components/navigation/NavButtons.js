@@ -17,10 +17,10 @@ const NavButtons = ({ currentRoute }) => {
       return (
         <ul>
           <li>
-            <ButtonLink to="/account">Delete Entry</ButtonLink>
+            <ButtonLink to="/">Delete Entry</ButtonLink>
           </li>
           <li>
-            <ButtonLink to="/test" primary="true">
+            <ButtonLink to="/" primary="true">
               Save and Preview
             </ButtonLink>
           </li>
