@@ -6,7 +6,6 @@ import ContainerAccount from "./styled/ContainerAccount";
 class Account extends Component {
   componentDidMount() {
     // Add in method to fetch just number of entries.
-
     this.props.fetchUser();
   }
 
