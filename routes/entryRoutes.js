@@ -37,4 +37,15 @@ module.exports = app => {
       }
     );
   });
+
+  app.get("/api/get_entries", requireLogin, async (req, res) => {
+    try {
+      const entries = await Entry.find({
+        _user: req.user._id
+      });
+      res.send(entries);
+    } catch (err) {
+      res.status(422).send(err);
+    }
+  });
 };

@@ -9,6 +9,8 @@ class Entries extends Component {
   }
 
   render() {
+    console.log(this.props.entries);
+
     return (
       <div>
         <p>Entries to print here.</p>
@@ -18,7 +20,7 @@ class Entries extends Component {
 }
 
 function mapStateToProps(state) {
-  return { entries: state.entries };
+  return { entries: state.entries, auth: state.auth };
 }
 
 export default connect(
