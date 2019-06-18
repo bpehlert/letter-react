@@ -1,11 +1,27 @@
-import React from "react";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import * as actions from "../actions";
+import axios from "axios";
 
-const Entries = () => {
-  return (
-    <div>
-      <p>Entries to print here.</p>
-    </div>
-  );
-};
+class Entries extends Component {
+  componentDidMount() {
+    this.props.fetchEntries();
+  }
 
-export default Entries;
+  render() {
+    return (
+      <div>
+        <p>Entries to print here.</p>
+      </div>
+    );
+  }
+}
+
+function mapStateToProps(state) {
+  return { entries: state.entries };
+}
+
+export default connect(
+  mapStateToProps,
+  actions
+)(Entries);
