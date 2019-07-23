@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import SaveMessage from "./SaveMessage";
 import { Editor, EditorState, RichUtils, convertToRaw } from "draft-js";
 // import { stateToHTML } from "draft-js-export-html"; //https://www.npmjs.com/package/draft-js-export-html
@@ -8,7 +8,9 @@ import axios from "axios";
 
 import "draft-js/dist/Draft.css";
 
-class EntryEditor extends React.Component {
+class EntryEditor extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -22,6 +24,7 @@ class EntryEditor extends React.Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
     this.refs.start.focus();
   }
 
@@ -74,15 +77,17 @@ class EntryEditor extends React.Component {
 
   async saveToDB(type, route, payLoad) {
     const res = await axios[type](route, payLoad);
-    this.setState({ id: res.data._id });
+    if (this._isMounted) {
+      this.setState({ id: res.data._id });
 
-    this.timer = setTimeout(() => {
-      this.setState({ saveMessage: "Saved" });
-      this.showTimer = setTimeout(
-        () => this.setState({ showSavedMessage: false }),
-        1000
-      );
-    }, 500);
+      this.timer = setTimeout(() => {
+        this.setState({ saveMessage: "Saved" });
+        this.showTimer = setTimeout(
+          () => this.setState({ showSavedMessage: false }),
+          1000
+        );
+      }, 500);
+    }
   }
 
   // Boilerplate Function for Draft.js to allow for keyboard shortcuts for styling text
