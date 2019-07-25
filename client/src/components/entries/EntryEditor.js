@@ -9,6 +9,7 @@ import axios from "axios";
 import "draft-js/dist/Draft.css";
 
 class EntryEditor extends Component {
+  // flag for mounted component, checked before async callback is called.
   _isMounted = false;
 
   constructor(props) {
