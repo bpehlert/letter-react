@@ -11,6 +11,8 @@ import New from "./entries/New";
 import Auth from "./auth/Auth";
 import Account from "./Account";
 
+// Refactor with React Hooks
+
 class App extends Component {
   componentDidMount() {
     this.props.fetchUser();
